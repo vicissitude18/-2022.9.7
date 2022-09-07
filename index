@@ -1,0 +1,128 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+int Secret(int low,int high)
+{
+	srand(time(NULL));
+	return (low + rand() % (high - low + 1));
+}
+#include<stdio.h>
+#include"game.h"
+void OutResult1(HandType hand);
+void OutResult2(ResultType result);
+extern int count;
+extern StateType  gameResult[];
+void Check(void)
+{
+	int i;
+	printf("计算机\t游戏者\t结果\n");
+	for (i = 0; i < count; i++)
+	{
+		OutResult1(gameResult[i].computer);
+		OutResult1(gameResult[i].player);
+		OutResult2(gameResult[i].result);
+		}
+	printf("\n");
+	return;
+}
+void OutResult1(HandType hand)
+{
+	switch (hand)
+	{
+	case stone:printf("石头\t"); break;
+	case scissor:printf("剪子\t"); break;
+	case paper:printf("布\t"); break;
+	}
+	return;
+}
+void OutResult2(ResultType result)
+{
+	switch (result)
+	{
+	case win:printf("胜利\n"); break;
+	case lose:printf("失败\n"); break;
+	case tie:printf("平局\n"); break;
+	}
+	return;
+}
+#include<stdio.h>
+void Guide(void)
+{
+	printf("握紧拳头表示石头，伸出食指和中指表示剪子，伸出五指表示布");
+	printf("石头打赢剪子，剪子打赢布，布打赢石头");
+	printf("能够重复游戏，阅读游戏指南，查看当前战况。\n");
+	return;
+        #define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include"game.h"
+int count = 0;
+StateType gameResult[N];
+void Game(void)
+{
+	HandType handComputer, handPlayer;
+	ResultType result;
+	int temp, select;
+	temp = Secret(1, 3);
+	handComputer = (HandType)temp;
+	printf("请输入您的选择:1.石头 2.剪子 3.布");
+	scanf("%d", &select);
+	handPlayer = (HandType)select;
+	if (handComputer == handPlayer)
+		result = tie;
+	else 
+	{
+		switch (handPlayer)
+		{
+		case stone:if (handPlayer == scissor) result = win;
+				  else result = lose;break;
+		case scissor:if (handPlayer == paper) result = win;
+					else result = lose; break;
+		case paper:if (handPlayer == stone) result = win;
+				  else result = lose; break;
+		default:result = lose; break;
+		}
+	}
+	if (result == win)
+		printf("你赢了!\n");
+	else if(result == lose)
+		printf("你输了!\n");
+	else 
+		printf("平局\n");
+	gameResult[count].computer = handComputer;
+	gameResult[count].player = handPlayer;
+	gameResult[count].result = result;
+	count++;
+	return ;
+        
+typedef struct
+{
+	HandType computer;
+	HandType player;
+	ResultType result;
+}StateType;
+void Guide(void);
+void Check(void);
+void Game(void);
+int Secret(int low, int high);
+
+#include<stdio.h>
+#include"game.h"
+int main()
+{
+	int select=0;
+	do
+	{
+		printf("1.游戏指南 2.开始游戏 3.查看战况 4.退出游戏\n");
+		printf("请输入：");
+		scanf("%d" ,& select);
+		switch (select)
+		{
+		case 1:Guide(); break;
+		case 2:Game(); break;
+		case 3:Check(); break;
+		case 4:printf("游戏结束!\n"); break;
+		}
+	} while (select == 1 || select == 2 ||select==3 );
+	return 0;
+}
+
